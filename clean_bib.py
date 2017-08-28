@@ -14,6 +14,14 @@ now = datetime.datetime.now()
 print("{0} Cleaning duff bib records from {1} into {2}".format(now, input_b, output_b))
 
 
+# search dictionary for string in values
+def search(values, searchFor):
+    for k in values:
+        if searchFor in values[k]:
+            return k
+    return None
+
+
 # Let's define a function to customize our entries.
 # It takes a record and return this record.
 def customizations(record):
@@ -69,6 +77,14 @@ def customizations(record):
         else:
             print('bad doi deleted: ', record['doi'])
             record.pop('doi', None)
+    # urls for doj publications
+    ncj_string_key = search(record, 'NCJ')
+    if ncj_string_key is not None:
+        ncj_string = record[ncj_string_key]
+        ncj_num_string = ''.join(ele for ele in ncj_string if ele.isdigit())
+        if len(ncj_num_string) == 6:
+            link = 'https://www.ncjrs.gov/App/Publications/abstract.aspx?ID=' + ncj_num_string
+            record['url'] = link
     return record
 
 
