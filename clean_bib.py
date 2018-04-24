@@ -68,11 +68,11 @@ def customizations(record):
     if 'doi' in record:
         # if '{' in record['doi']:
         #     print(record['doi'])
-        for prefix in ['http://dx.doi.org/', 'https://dx.doi.org/', 'doi:', '{', '}']:
+        for prefix in ['http://doi.org/', 'https://doi.org/', 'http://dx.doi.org/', 'https://dx.doi.org/', 'doi:', '{', '}']:
             record['doi'] = record['doi'].replace(prefix, '')
         if record['doi'].startswith('10'):
             link = record['doi']
-            link = 'http://dx.doi.org/' + link
+            link = 'https://doi.org/' + link
             record['url'] = link
         else:
             print('bad doi deleted: ', record['doi'])
@@ -85,6 +85,17 @@ def customizations(record):
         if len(ncj_num_string) == 6:
             link = 'https://www.ncjrs.gov/App/Publications/abstract.aspx?ID=' + ncj_num_string
             record['url'] = link
+    # pandoc chokes on cite keys that end in special chars (except _)
+    if record['ID'][-1] == '-':
+        record['ID'] = record['ID'][0:-1]
+    # wrapping organization names in brackets
+    if 'author' in record:
+        for i in range(10):
+            if record['author'][0] == '{' and record['author'][-1] == '}':
+                record['author'] = record['author'][0:-1]
+        for org in ['US Census Bureau', 'Bureau of Justice Statistics', 'The Pew Charitable Trusts', 'US Department of Transportation', '[US DEA] United States Drug Enforcement Administration', '[US GAO] United States Government Accountability Office', 'US Office of Management and Budget', 'Office of National Drug Control Policy', 'DC Metropolitan Police Department']:
+            if record['author'] == org:
+                record['author'] = '{' + record['author'] + '}'
     return record
 
 
