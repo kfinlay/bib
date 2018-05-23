@@ -93,7 +93,7 @@ def customizations(record):
         for i in range(10):
             if record['author'][0] == '{' and record['author'][-1] == '}':
                 record['author'] = record['author'][0:-1]
-        for org in ['US Census Bureau', 'Bureau of Justice Statistics', 'The Pew Charitable Trusts', 'US Department of Transportation', '[US DEA] United States Drug Enforcement Administration', '[US GAO] United States Government Accountability Office', 'US Office of Management and Budget', 'Office of National Drug Control Policy', 'DC Metropolitan Police Department']:
+        for org in ['Council of Economic Advisers', 'US Census Bureau', 'Bureau of Justice Statistics', 'The Pew Charitable Trusts', 'US Department of Transportation', '[US DEA] United States Drug Enforcement Administration', '[US GAO] United States Government Accountability Office', 'US Office of Management and Budget', 'Office of National Drug Control Policy', 'DC Metropolitan Police Department']:
             if record['author'] == org:
                 record['author'] = '{' + record['author'] + '}'
     return record
